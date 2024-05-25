@@ -20,8 +20,13 @@ services:
     secrets:
       - mysql_root_password
       - mysql_app_password
-    
-   
+
+    # limit logging
+    logging:
+      options:
+        max-size: 1024m
+        max-file: "5"
+
     environment:
     - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
     - MYSQL_PASSWORD_FILE=/run/secrets/mysql_app_password
@@ -42,6 +47,11 @@ services:
 
     secrets:
       - mysql_root_password
+      
+    logging:
+      options:
+        max-size: 50m
+        max-file: "5"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -53,6 +63,12 @@ services:
       - db:db
     depends_on:
       - "db"
+
+    logging:
+      options:
+        max-size: 50m
+        max-file: "5"
+        
     environment:
       - PMA_ABSOLUTE_URI=${ENV_PHPMYADMIN_URI}
       - PMA_HOST=db
